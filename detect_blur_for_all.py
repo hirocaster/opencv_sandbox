@@ -15,8 +15,8 @@ def variance_of_laplacian(image):
     return cv2.Laplacian(image, cv2.CV_64F)
 
 
-def report_image(image, fm, text):
-    cv2.putText(image, "{}: {:.2f}".format(text, fm), (10, 30),
+def report_image(image, laplacian, text):
+    cv2.putText(image, "{}: {:.2f}".format(text, laplacian.var()), (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 3)
     # cv2.imshow("Image", image)
     # key = cv2.waitKey(0)
@@ -36,12 +36,12 @@ def write_image(file_path, image, sub_dir="/report"):
 for image_path in paths.list_images(args["images"]):
     image = cv2.imread(image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    fm = variance_of_laplacian(gray)
+    laplacian = variance_of_laplacian(gray)
 
     text = "Not Blurry"
-    if fm.var() < args["threshold"]:
+    if laplacian.var() < args["threshold"]:
         text = "Blurry"
 
-    report_image(image, fm.var(), text)
+    report_image(image, laplacian, text)
     write_image(image_path, image)
-    write_image(image_path, fm, "/laplacian")
+    write_image(image_path, laplacian, "/laplacian")
