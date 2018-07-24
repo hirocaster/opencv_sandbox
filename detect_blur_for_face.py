@@ -45,8 +45,8 @@ def write_image(file_path, image, sub_dir="/report", suffix=""):
     cv2.imwrite(export_file_path, image)
 
 def face_recognition(gray):
-    face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
-    return face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=3, minSize=(30, 30))
+    face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+    return face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(20, 20))
 
 def crop_faces(gray, faces):
     return [gray[y: y + h, x: x + w] for x,y,w,h in faces]
